@@ -21,13 +21,7 @@ interface NavItemConfig {
 }
 
 export default function Header() {
-  const [activeSection, setActiveSection] = React.useState<string>(() => {
-    // Read URL hash at mount time to initialize the active nav item
-    if (typeof window === "undefined") return "";
-    const hash = window.location.hash.replace("#", "");
-    if (!hash) return "";
-    return hash === "message" || hash === "home" ? "about" : hash;
-  });
+  const [activeSection, setActiveSection] = useState("about");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isScrolledRef = useRef(false);
@@ -76,12 +70,11 @@ export default function Header() {
   const handleScrollTo = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
-    navId?: string,
   ) => {
     if (href.startsWith("#")) {
       e.preventDefault();
       const targetId = href.replace("#", "");
-      // Resolve alias: if #about doesn't exist in DOM, scroll to #message
+      // Resolve alias
       const resolvedId =
         targetId === "about" && !document.getElementById("about")
           ? "message"
@@ -91,9 +84,7 @@ export default function Header() {
         offset: -72,
         duration: 0.6,
       });
-
-      // Immediately set active to the nav item id (not the DOM id)
-      setActiveSection(navId || targetId);
+      setActiveSection(targetId === "message" ? "about" : targetId);
       setMobileMenuOpen(false);
     }
   };
@@ -131,68 +122,39 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // IntersectionObserver scroll-spy — detects current section and updates active nav item
+  // Native IntersectionObserver for zero-reflow ScrollSpy off the main thread
   useEffect(() => {
-    // All scrollable section IDs on the page in order
-    const sectionIds = [
-      "home",
+    const sections = [
       "about",
       "message",
       "leadership",
-      "vision",
       "interviews",
       "gallery",
       "ventures",
       "contact",
     ];
 
-    // Map section id → nav item id (merge aliases)
-    const resolveNavId = (id: string): string => {
-      if (id === "message" || id === "home") return "about";
-      if (id === "vision") return "leadership"; // Core Principles section maps to Leadership & Roles nav
-      return id;
-    };
-
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the entry that is entering the viewport (intersecting)
-        // Pick the one closest to the top (smallest boundingClientRect.top above 0)
-        const intersecting = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-
-        if (intersecting.length > 0) {
-          const topEntry = intersecting[0];
-          setActiveSection(resolveNavId(topEntry.target.id));
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            setActiveSection(id === "message" ? "about" : id);
+          }
+        });
       },
       {
-        // Trigger when the section's top edge crosses the upper 30% of the viewport
-        rootMargin: "-10% 0px -60% 0px",
+        rootMargin: "-25% 0px -55% 0px",
         threshold: 0,
       },
     );
 
-    sectionIds.forEach((id) => {
+    sections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
-    // Bottom-of-page fallback: when user scrolls to very bottom, activate "contact"
-    const handleBottomDetect = () => {
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const pageHeight = document.documentElement.scrollHeight;
-      if (pageHeight - scrollBottom < 80) {
-        setActiveSection("contact");
-      }
-    };
-
-    window.addEventListener("scroll", handleBottomDetect, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleBottomDetect);
-    };
+    return () => observer.disconnect();
   }, []);
 
   // Prevent body scroll when mobile menu is open
@@ -309,7 +271,7 @@ export default function Header() {
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={(e) => handleScrollTo(e, item.href, item.id)}
+                  onClick={(e) => handleScrollTo(e, item.href)}
                   className={`flex items-center gap-1.5 px-2 xl:px-2.5 2xl:px-3 py-1.5 xl:py-2 rounded-xl text-xs xl:text-[13px] font-semibold transition-all duration-200 cursor-pointer active:scale-95 whitespace-nowrap shrink-0 select-none ${
                     isActive
                       ? "bg-[#eef6ff] text-[#0154A5] font-bold border border-blue-200/80 shadow-2xs"
@@ -381,7 +343,7 @@ export default function Header() {
                   <a
                     key={item.id}
                     href={item.href}
-                    onClick={(e) => handleScrollTo(e, item.href, item.id)}
+                    onClick={(e) => handleScrollTo(e, item.href)}
                     className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                       isActive
                         ? "bg-[#eef6ff] text-[#0154A5] font-bold border border-blue-100"

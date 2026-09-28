@@ -356,10 +356,10 @@ export const businessSectorsData: BusinessSector[] = [
     name: "Construction Materials",
     subBrands: [{ name: "Huaxia", href: "#" }],
   },
-  {
-    name: "Electronics & Technology",
-    subBrands: [{ name: "PQI", href: "#" }],
-  },
+  // {
+  //   name: "Electronics & Technology",
+  //   subBrands: [{ name: "PQI", href: "#" }],
+  // },
 ];
 
 export const portfolioNavItems: NavigationItem[] = [

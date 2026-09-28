@@ -365,13 +365,13 @@ const SECTOR_METADATA: Record<string, SectorDetails> = {
       "Direct importation and B2B distribution of certified structural materials and specialized building hardware for major commercial developments.",
     icon: ConstructionIcon,
   },
-  "Electronics & Technology": {
-    macroCategory: "Industrial & Tech",
-    scopeBadge: "Consumer Tech & Storage",
-    description:
-      "Distribution of high-performance digital storage peripherals, flash memory, and smart consumer technology solutions via PQI.",
-    icon: TechIcon,
-  },
+  // "Electronics & Technology": {
+  //   macroCategory: "Industrial & Tech",
+  //   scopeBadge: "Consumer Tech & Storage",
+  //   description:
+  //     "Distribution of high-performance digital storage peripherals, flash memory, and smart consumer technology solutions via PQI.",
+  //   icon: TechIcon,
+  // },
   "Marketing Agency": {
     macroCategory: "Industrial & Tech",
     scopeBadge: "Digital Growth & Advisory",

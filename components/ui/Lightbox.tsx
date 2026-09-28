@@ -26,7 +26,7 @@ export default function Lightbox({
   const mounted = React.useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
@@ -162,6 +162,6 @@ export default function Lightbox({
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

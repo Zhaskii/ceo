@@ -1,230 +1,254 @@
 "use client";
 
 import React, { useState } from "react";
-import { MailIcon, PhoneIcon, MapPinIcon } from "../ui/Icons";
+import {
+  BriefcaseIcon,
+  ChatBubbleIcon,
+  GlobeIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+  PhotoOutlineIcon,
+  VideoCameraIcon,
+} from "../ui/Icons";
 import { smoothScrollTo } from "@/lib/gsapUtils";
+
+const portfolioLinks = [
+  { name: "About & Vision", href: "#about", icon: ChatBubbleIcon },
+  { name: "Leadership & Roles", href: "#leadership", icon: BriefcaseIcon },
+  { name: "Keynotes & Media", href: "#interviews", icon: VideoCameraIcon },
+  { name: "Moments & Honors", href: "#gallery", icon: PhotoOutlineIcon },
+  { name: "Ventures & Portfolio", href: "#ventures", icon: GlobeIcon },
+];
+
+const credentials = [
+  "Chief Executive Officer, Arksh Group",
+  "Executive Member, Nepal Chamber of Commerce",
+  "Executive Member, Nepal–Singapore Chamber of Commerce & Industry",
+  "Business leader and long-term investor",
+];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [copied, setCopied] = useState(false);
 
-  const handleCopyEmail = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleCopyEmail = () => {
     const email = "info@arkshgroup.com";
-    navigator.clipboard.writeText(email).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-      window.location.href = `mailto:${email}`;
-    });
+    void navigator.clipboard?.writeText(email);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2500);
   };
 
   const handleScrollTo = (
-    e: React.MouseEvent<HTMLAnchorElement>,
+    event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      const targetId = href.replace("#", "");
-      smoothScrollTo(targetId, {
-        offset: targetId === "home" ? 0 : -75,
-        duration: targetId === "home" ? 1.1 : 0.9,
-      });
-    }
-  };
+    if (!href.startsWith("#")) return;
 
-  const quickLinks = [
-    { name: "About & Vision", href: "#about" },
-    { name: "Leadership & Roles", href: "#leadership" },
-    { name: "Keynotes & Media", href: "#interviews" },
-    { name: "Moments & Honors", href: "#gallery" },
-    { name: "Ventures & Portfolio", href: "#ventures" },
-    { name: "Secretariat & Contact", href: "#contact" },
-  ];
+    event.preventDefault();
+    const targetId = href.slice(1);
+    const resolvedId =
+      targetId === "about" && !document.getElementById("about")
+        ? "message"
+        : targetId;
+
+    smoothScrollTo(resolvedId, {
+      offset: targetId === "home" ? 0 : -75,
+      duration: targetId === "home" ? 1.1 : 0.9,
+    });
+  };
 
   return (
     <footer
       id="contact"
-      className="bg-[#0154A5] text-white pt-16 pb-8 font-sans w-full relative overflow-hidden"
+      className="relative isolate w-full overflow-hidden bg-[#07549c] pt-16 pb-8 font-sans text-white sm:pt-20"
     >
-      {/* Decorative top curve styling */}
       <div
-        className="hidden sm:block absolute top-0 left-0 w-full h-6 pointer-events-none opacity-90"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.07]"
         style={{
-          background: "#f0f6ff",
-          clipPath: "ellipse(50% 100% at 50% 0%)",
+          backgroundImage:
+            "radial-gradient(circle, #ffffff 1px, transparent 1.2px)",
+          backgroundSize: "39px 39px",
         }}
       />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-sky-400/10 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 pt-4">
-        {/* Col 1: About & Contact */}
-        <div className="flex flex-col">
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 mb-1">
-            Official Executive Portfolio
-          </p>
-          <h3 className="text-xl font-bold mb-2 text-white">Rajul Shrestha</h3>
-          <div className="w-8 h-0.5 bg-gradient-to-r from-white/70 to-transparent rounded-full mb-3" />
-          <p className="text-xs sm:text-[13px] leading-relaxed mb-6 text-white/75">
-            Entrepreneur, business leader, and visionary investor — CEO of Arksh
-            Group (Est. 1978 AD), pioneering transformative enterprise,
-            international bilateral partnerships, and economic growth in Nepal.
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 sm:px-10 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1.18fr_1.08fr] lg:gap-10 xl:px-12">
+        <section aria-label="Personal profile" className="max-w-sm">
+          <a
+            href="#home"
+            onClick={(event) => handleScrollTo(event, "#home")}
+            className="group mb-7 inline-flex items-center gap-4"
+            aria-label="Rajul Shrestha — back to top"
+          >
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#003d7b] text-xl font-extrabold tracking-tight shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_12px_24px_rgba(0,30,77,0.2)] transition-transform duration-300 group-hover:scale-105">
+              RS
+            </span>
+            <span>
+              <span className="block text-[17px] font-extrabold tracking-tight text-white sm:text-lg">
+                Rajul Shrestha
+              </span>
+              <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.18em] text-sky-300">
+                Personal Portfolio
+              </span>
+            </span>
+          </a>
+
+          <p className="text-sm leading-7 text-sky-100/75">
+            Entrepreneur and business leader focused on building enduring
+            enterprises, meaningful partnerships, and opportunities for Nepal.
           </p>
 
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 mb-1">
-            Office of the CEO & Secretariat
-          </p>
-          <h3 className="text-xl font-bold mb-2 text-white">Direct Contact</h3>
-          <div className="w-8 h-0.5 bg-gradient-to-r from-white/70 to-transparent rounded-full mb-4" />
-
-          <div className="space-y-3.5 text-xs sm:text-[13px]">
-            {/* Address */}
+          <div className="mt-8 space-y-4 text-sm">
             <a
               href="https://maps.google.com/?q=Arksh+Group+Lazimpat+Kathmandu+Nepal"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start gap-3 group"
+              className="group flex items-start gap-3 text-sky-100/75 transition-colors hover:text-white"
             >
-              <div className="bg-white/15 group-hover:bg-white p-2 rounded-xl mt-0.5 shrink-0 transition-all border border-white/10 group-hover:text-[#0154A5]">
-                <MapPinIcon className="w-3.5 h-3.5 text-white group-hover:text-[#0154A5]" />
-              </div>
-              <span className="text-white/75 group-hover:text-white transition-colors leading-relaxed">
-                152 Rani Devi Marg Lazimpat,
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-sky-300 transition-colors group-hover:bg-white group-hover:text-[#07549c]">
+                <MapPinIcon className="h-4 w-4" />
+              </span>
+              <span className="pt-1 leading-5">
+                152 Rani Devi Marg, Lazimpat
                 <br />
-                Kathmandu, Nepal.
+                Kathmandu, Nepal
               </span>
             </a>
-
-            {/* Phone */}
             <a
               href="tel:+97714002049"
-              className="flex items-center gap-3 group"
+              className="group flex items-center gap-3 text-sky-100/75 transition-colors hover:text-white"
             >
-              <div className="bg-white/15 group-hover:bg-white p-2 rounded-xl shrink-0 transition-all border border-white/10 group-hover:text-[#0154A5]">
-                <PhoneIcon className="w-3.5 h-3.5 text-white group-hover:text-[#0154A5]" />
-              </div>
-              <span className="text-white/75 group-hover:text-white transition-colors">
-                +977-1-4002049 / +977 980-2074449
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-sky-300 transition-colors group-hover:bg-white group-hover:text-[#07549c]">
+                <PhoneIcon className="h-4 w-4" />
               </span>
+              <span>+977 1 4002049 / +977 980 2074449</span>
             </a>
-
-            {/* Email */}
             <button
+              type="button"
               onClick={handleCopyEmail}
-              className="flex items-center gap-3 group text-left w-full cursor-pointer"
+              className="group flex w-full items-center gap-3 text-left text-sky-100/75 transition-colors hover:text-white"
             >
-              <div className="bg-white/15 group-hover:bg-white p-2 rounded-xl shrink-0 transition-all border border-white/10 group-hover:text-[#0154A5]">
-                <MailIcon className="w-3.5 h-3.5 text-white group-hover:text-[#0154A5]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white/75 group-hover:text-white transition-colors">
-                  info@arkshgroup.com
-                </span>
-                {copied && (
-                  <span className="text-[10px] text-sky-200 font-medium">
-                    ✓ Copied to clipboard!
-                  </span>
-                )}
-              </div>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-sky-300 transition-colors group-hover:bg-white group-hover:text-[#07549c]">
+                <MailIcon className="h-4 w-4" />
+              </span>
+              <span>
+                <span className="block">info@arkshgroup.com</span>
+              </span>
             </button>
           </div>
-        </div>
+        </section>
 
-        {/* Col 2: Portfolio Navigation Links */}
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 mb-1">
-            Navigation
+        <section aria-labelledby="portfolio-links-title">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-sky-300/75">
+            Portfolio
           </p>
-          <h3 className="text-xl font-bold mb-2 text-white">
-            Portfolio Sections
-          </h3>
-          <div className="w-8 h-0.5 bg-gradient-to-r from-white/70 to-transparent rounded-full mb-4" />
+          <h2
+            id="portfolio-links-title"
+            className="mt-2 text-xl font-bold tracking-tight"
+          >
+            Explore This Site
+          </h2>
+          <div className="mt-6 h-0.5 w-10 rounded-full bg-cyan-400" />
 
-          <ul className="space-y-1.5">
-            {quickLinks.map((link) => (
-              <li key={link.name}>
+          <ul className="mt-5 space-y-1.5">
+            {portfolioLinks.map(({ name, href, icon: Icon }) => (
+              <li key={name}>
                 <a
-                  href={link.href}
-                  onClick={(e) => handleScrollTo(e, link.href)}
-                  className="group flex items-center gap-2 py-1 px-2.5 rounded-lg hover:bg-white/10 transition-colors w-fit text-xs sm:text-[13px] text-white/75 hover:text-white cursor-pointer"
+                  href={href}
+                  onClick={(event) => handleScrollTo(event, href)}
+                  className="group inline-flex items-center gap-3 rounded-lg py-1.5 pr-3 text-sm text-sky-100/70 transition-colors hover:text-white"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-white/40 group-hover:bg-white group-hover:scale-125 transition-all shrink-0" />
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    {link.name}
-                  </span>
+                  <Icon className="h-4 w-4 text-cyan-400 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <span>{name}</span>
                 </a>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
-        {/* Col 3: Stay Connected Facebook Embed */}
-        <div className="w-full">
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 mb-1">
-            Stay Connected
+        <section aria-labelledby="credentials-title">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-sky-300/75">
+            Profile
           </p>
-          <h3 className="text-xl font-bold mb-2 text-white">Follow Us</h3>
-          <div className="w-8 h-0.5 bg-gradient-to-r from-white/70 to-transparent rounded-full mb-4" />
+          <h2
+            id="credentials-title"
+            className="mt-2 text-xl font-bold tracking-tight"
+          >
+            Key Credentials
+          </h2>
+          <div className="mt-6 h-0.5 w-10 rounded-full bg-cyan-400" />
 
-          <div className="rounded-2xl overflow-hidden shadow-lg w-full h-64 border border-white/15 bg-white/5">
-            <iframe
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FArksh.Group%2F&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-              width="100%"
-              height="100%"
-              style={{ border: "none", overflow: "hidden" }}
-              scrolling="no"
-              frameBorder="0"
-              allowFullScreen={true}
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              loading="lazy"
-              title="Arksh Group Facebook Feed"
-            />
-          </div>
-        </div>
+          <ul className="mt-5 space-y-4">
+            {credentials.map((credential) => (
+              <li
+                key={credential}
+                className="flex gap-3 text-sm leading-5 text-sky-100/75"
+              >
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400" />
+                <span>{credential}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-        {/* Col 4: Find Us Google Maps Embed */}
-        <div className="w-full">
-          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 mb-1">
-            Headquarters
+        <section aria-labelledby="location-title" className="min-w-0">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-sky-300/75">
+            Location
           </p>
-          <h3 className="text-xl font-bold mb-2 text-white">Locate Us</h3>
-          <div className="w-8 h-0.5 bg-gradient-to-r from-white/70 to-transparent rounded-full mb-4" />
+          <h2
+            id="location-title"
+            className="mt-2 text-xl font-bold tracking-tight"
+          >
+            Office Location
+          </h2>
+          <div className="mt-6 h-0.5 w-10 rounded-full bg-cyan-400" />
 
-          <div className="rounded-2xl overflow-hidden shadow-lg w-full h-64 border border-white/15 bg-white/5">
+          <div className="mt-5 overflow-hidden rounded-2xl border border-white/25 bg-white/10 shadow-[0_12px_28px_rgba(0,28,68,0.24)]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.7063399626504!2d85.31907747568266!3d27.7263518246527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1918569c8961%3A0x5f43dd27a908ad94!2sArksh%20Group!5e0!3m2!1sen!2snp!4v1773384215008!5m2!1sen!2snp"
               width="100%"
-              height="100%"
+              height="245"
               style={{ border: 0 }}
-              allowFullScreen={true}
+              allowFullScreen
               loading="lazy"
-              title="Arksh Group Location Map"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Rajul Shrestha's Kathmandu office location"
             />
           </div>
+          <a
+            href="https://maps.google.com/?q=Arksh+Group+Lazimpat+Kathmandu+Nepal"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-sky-300 transition-colors hover:text-white"
+          >
+            <GlobeIcon className="h-4 w-4" />
+            Open in Google Maps <span aria-hidden="true">↗</span>
+          </a>
+        </section>
+      </div>
+
+      <div className="mx-auto mt-14 max-w-7xl border-t border-white/10 px-6 pt-6 sm:px-10 xl:px-12">
+        <div className="flex flex-col gap-3 text-xs text-sky-200/65 md:flex-row md:items-center md:justify-between">
+          <p>
+            © {currentYear}{" "}
+            <span className="font-bold text-white">Rajul Shrestha</span>. All
+            rights reserved.
+          </p>
+          <p className="text-sky-200/55">
+            Personal portfolio <span className="mx-2">•</span> Kathmandu, Nepal
+          </p>
         </div>
       </div>
 
-      {/* Bottom Sub-Bar */}
-      <div className="mt-12 border-t border-white/10 pt-6">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/50">
-          <p>
-            © {currentYear}{" "}
-            <span className="text-white/90 font-bold">RAJUL SHRESTHA</span> •{" "}
-            <span className="text-white/75 font-medium">
-              Official Executive Portfolio
-            </span>
-            . All Rights Reserved.
-          </p>
-          <div className="flex items-center gap-3">
-            <a
-              href="#home"
-              onClick={(e) => handleScrollTo(e, "#home")}
-              className="hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer inline-flex items-center gap-1"
-            >
-              <span>Back to Top</span>
-              <span className="text-sm">↑</span>
-            </a>
-          </div>
-        </div>
-      </div>
+      <a
+        href="#home"
+        onClick={(event) => handleScrollTo(event, "#home")}
+        aria-label="Back to top"
+        className="absolute bottom-8 right-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-[#0d62b3] text-2xl text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-[#1672c7] sm:right-8"
+      >
+        ↑
+      </a>
     </footer>
   );
 }

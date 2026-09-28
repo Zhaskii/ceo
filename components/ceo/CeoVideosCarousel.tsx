@@ -191,6 +191,7 @@ export default function CeoVideosCarousel() {
 
       {/* Video Modal Player */}
       <VideoModal
+        key={selectedVideoId ?? "closed"}
         isOpen={Boolean(selectedVideoId)}
         onClose={() => setSelectedVideoId(null)}
         youtubeId={selectedVideoId || ""}
