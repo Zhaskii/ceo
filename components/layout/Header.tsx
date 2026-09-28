@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   MailIcon,
   PhoneIcon,
@@ -12,6 +13,7 @@ import {
   MapPinOutlineIcon,
 } from "../ui/Icons";
 import { smoothScrollTo } from "@/lib/gsapUtils";
+import ceo from "@/public/images/ARKSH-CEO.png";
 
 interface NavItemConfig {
   id: string;
@@ -233,9 +235,16 @@ export default function Header() {
             className="flex items-center gap-3 shrink-0 group cursor-pointer"
             aria-label="Rajul Shrestha - Back to top"
           >
-            {/* Initials Avatar Monogram - Circular Avatar */}
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0154A5] text-white flex items-center justify-center font-bold text-sm sm:text-base tracking-wider shadow-sm group-hover:scale-105 group-hover:shadow-md transition-all duration-300 ring-2 ring-[#0154A5]/10 shrink-0">
-              RS
+            {/* ARKSH logo */}
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white shadow-sm ring-2 ring-[#0154A5]/10 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md sm:h-11 sm:w-11">
+              <Image
+                src={ceo}
+                alt="ARKSH logo"
+                fill
+                sizes="(max-width: 640px) 40px, 44px"
+                className="object-contain"
+                priority
+              />
             </div>
 
             {/* Mobile Brand / Executive Identity Text (2 Lines - Matching Screenshot) */}
